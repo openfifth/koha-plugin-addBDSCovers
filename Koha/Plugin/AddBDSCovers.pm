@@ -4,7 +4,7 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "1.0";
+our $VERSION = "1.1";
 
 our $metadata = {
     name            => 'AddBDSCovers',
@@ -45,6 +45,7 @@ sub intranet_js {
                     <a href="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=l&amp;DBM=B" />
                         <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" />
                     </a>
+                    <div class="hint">BDS cover image</div>
                 </div>
             `;
         }
