@@ -4,13 +4,13 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "0.3";
+our $VERSION = "1.0";
 
 our $metadata = {
     name            => 'AddBDSCovers',
     author          => 'Matt Blenkinsop',
     date_authored   => '2022-01-11',
-    date_updated    => "2022-01-13",
+    date_updated    => "2022-01-19",
     minimum_version => '19.05.00.000',
     maximum_version => undef,
     version         => $VERSION,
@@ -43,7 +43,7 @@ sub intranet_js {
             cover_image_div.innerHTML += `
                 <div class="cover-image">
                     <a href="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=l&amp;DBM=B" />
-                        <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=s&amp;DBM=B" />
+                        <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" />
                     </a>
                 </div>
             `;
@@ -85,7 +85,7 @@ sub opac_js {
             cover_image_div.innerHTML += `
                 <div class="cover-image">
                     <a href="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=l&amp;DBM=B" />
-                        <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=s&amp;DBM=B" />
+                        <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${normalized_isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" />
                     </a>
                 </div>
                 <div class="hint">Image from BDS</div>
@@ -97,7 +97,7 @@ sub opac_js {
                 if(search_results[i + 1].isbn){
                     div.innerHTML += `
                         <span title="${search_results[i + 1].img_title}" id="bds-thumbnail${i + 1}">
-                            <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${search_results[i + 1].isbn}&amp;SIZE=s&amp;DBM=B" alt="" class="item-thumbnail" />
+                            <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${search_results[i + 1].isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" class="item-thumbnail" />
                         </span>
                     `;
                 } else {
