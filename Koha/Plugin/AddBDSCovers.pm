@@ -4,7 +4,7 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "3.3";
+our $VERSION = "3.4";
 
 our $metadata = {
     name            => 'AddBDSCovers',
@@ -37,7 +37,7 @@ sub intranet_cover_images {
 	my $js = <<'JS';
     <script>
       function addBDSCovers(e) {
-        const search_results_images = document.querySelectorAll('.cover_slides, .cover-slider');
+        const search_results_images = document.querySelectorAll('.cover-slides, .cover-slider');
         if(search_results_images.length > 0){
             search_results_images.forEach((div, i) => {
                 let { isbn, biblionumber, processedbiblio } = div.dataset
