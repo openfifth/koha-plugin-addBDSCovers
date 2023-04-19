@@ -4,13 +4,13 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "3.4";
+our $VERSION = "3.5";
 
 our $metadata = {
     name            => 'AddBDSCovers',
     author          => 'Matt Blenkinsop',
     date_authored   => '2022-01-11',
-    date_updated    => "2022-01-31",
+    date_updated    => "2022-04-19",
     minimum_version => '19.05.00.000',
     maximum_version => undef,
     version         => $VERSION,
@@ -69,7 +69,7 @@ sub opac_cover_images {
     my $js = <<'JS';
     <script>
       function addBDSCoversOPAC(e) {
-        const search_results_images = document.querySelectorAll('.cover_image_plugins');
+        const search_results_images = document.querySelectorAll('.cover-slides, .cover-slider');
         if(search_results_images.length > 0){
             search_results_images.forEach((div, i) => {
                 let { isbn, imgtitle } =  div.dataset;
