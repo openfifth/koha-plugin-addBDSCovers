@@ -4,13 +4,13 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "4.1";
+our $VERSION = "5.0";
 
 our $metadata = {
     name            => 'AddBDSCovers',
     author          => 'Matt Blenkinsop',
     date_authored   => '2022-01-11',
-    date_updated    => "2022-04-19",
+    date_updated    => "2024-10-09",
     minimum_version => '19.05.00.000',
     maximum_version => undef,
     version         => $VERSION,
@@ -37,15 +37,15 @@ sub intranet_cover_images {
 	my $js = <<'JS';
     <script>
       function addBDSCovers(e) {
-        const search_results_images = document.querySelectorAll('.cover-slides, .cover-slider');
-        if(search_results_images.length > 0){
-            search_results_images.forEach((div, i) => {
+        const searchResultsImages = document.querySelectorAll('.cover-slides, .cover-slider');
+        if(searchResultsImages.length > 0){
+            searchResultsImages.forEach((div, i) => {
                 let { isbn, biblionumber, processedbiblio } = div.dataset
                 if(isbn){
                     div.innerHTML += `
                         <div id="bds-coverimg-${biblionumber}" class="cover-image">
-                            <a href=${ processedbiblio ? processedbiblio : `http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B` } >
-                                <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" />
+                            <a href=${ processedbiblio ? processedbiblio : `https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B` } >
+                                <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" />
                             </a>
                             <div class="hint">BDS cover image</div>
                         </div>
@@ -69,21 +69,35 @@ sub opac_cover_images {
     my $js = <<'JS';
     <script>
       function addBDSCoversOPAC(e) {
-        const search_results_images = document.querySelectorAll('.cover-slides, .cover-slider');
-        if(search_results_images.length > 0){
-            search_results_images.forEach((div, i) => {
-                let { isbn, imgtitle } =  div.dataset;
+        const searchResultsImages = document.querySelectorAll('.cover-slides, .cover-slider');
+        if(searchResultsImages.length > 0){
+            searchResultsImages.forEach((div, i) => {
+                let { isbn, imgtitle } = div.dataset;
                 if(isbn){
                     div.innerHTML += `
                         <div class=${ imgtitle ? "" : "cover-image" }>
-                            <a href="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" />
-                                <img src="http://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" class=${ imgtitle ? "item-thumbnail" : "" } />
+                            <a href="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" />
+                                <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" class=${ imgtitle ? "item-thumbnail" : "" } />
                             </a>
                         </div>
                         <div class="hint">Image from BDS</div>
                     `;
                 } else {
                     div.innerHTML += `<span class="no-image">No cover image available</span>`;
+                }
+            })
+        }
+        const shelfCovers = document.querySelectorAll('.shelfbrowser_cover');
+        if(shelfCovers.length > 0){
+            shelfCovers.forEach((a, i) => {
+                let { isbn } = a.dataset;
+                if(isbn){
+                    a.classList.add('cover-image');
+                    a.innerHTML += `
+                        <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" alt="" />
+                    `;
+                } else {
+                    a.innerHTML += `<span class="no-image">No cover image available</span>`;
                 }
             })
         }
