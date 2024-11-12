@@ -4,7 +4,7 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "5.0";
+our $VERSION = "6.0";
 
 our $metadata = {
     name            => 'AddBDSCovers',
@@ -95,6 +95,21 @@ sub opac_cover_images {
                     a.classList.add('cover-image');
                     a.innerHTML += `
                         <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" alt="" />
+                    `;
+                } else {
+                    a.innerHTML += `<span class="no-image">No cover image available</span>`;
+                }
+            })
+        }
+        const listCovers = document.querySelectorAll('#listcontents .coverimages .p1');
+        if(listCovers.length > 0){
+            listCovers.forEach((a, i) => {
+                let { isbn, title } = a.dataset;
+                if(isbn){
+                    a.innerHTML += `
+                        <span title="${title}" id="bds-coverimg-${isbn}">
+                            <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" alt="" />
+                        </span>
                     `;
                 } else {
                     a.innerHTML += `<span class="no-image">No cover image available</span>`;

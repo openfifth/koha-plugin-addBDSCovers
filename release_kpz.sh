@@ -37,6 +37,7 @@ if [ "$NEW_VERSION_NUMBER" != "$PREVIOUS_VERSION_NUMBER" ]; then
     echo "Version has been updated - starting upload"
     git add .
     git commit -m "$NEW_VERSION"
+    git tag "v$NEW_VERSION_NUMBER"
     git push
     echo -e "${GREEN}Plugin has been pushed to Github and a release is being generated${NC}"
 else
