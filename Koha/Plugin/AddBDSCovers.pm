@@ -4,13 +4,13 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "6.0";
+our $VERSION = "7.0";
 
 our $metadata = {
     name            => 'AddBDSCovers',
     author          => 'Matt Blenkinsop',
     date_authored   => '2022-01-11',
-    date_updated    => "2024-10-09",
+    date_updated    => "2025-04-29",
     minimum_version => '19.05.00.000',
     maximum_version => undef,
     version         => $VERSION,
@@ -36,6 +36,11 @@ sub intranet_cover_images {
 
 	my $js = <<'JS';
     <script>
+      function hidePlaceholderAndBDSCoverHint(e, i) {
+        e.style.display = 'none';
+        let hintTag = document.querySelector(`#bds-coverimg-${i}`);
+        hintTag.style.display = 'none';
+      }
       function addBDSCovers(e) {
         const searchResultsImages = document.querySelectorAll('.cover-slides, .cover-slider');
         if(searchResultsImages.length > 0){
@@ -44,10 +49,10 @@ sub intranet_cover_images {
                 if(isbn){
                     div.innerHTML += `
                         <div id="bds-coverimg-${biblionumber}" class="cover-image">
-                            <a href=${ processedbiblio ? processedbiblio : `https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B` } >
-                                <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" />
+                            <a href=${ processedbiblio ? processedbiblio : `https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B&amp;err=no-placeholder` } >
+                                <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B&amp;err=no-placeholder" onerror="hidePlaceholderAndBDSCoverHint(this, ${i})" alt="BDS cover image" />
                             </a>
-                            <div class="hint">BDS cover image</div>
+                            <div id = "bds-coverimg-${i}" class="hint">BDS cover image</div>
                         </div>
                     `;
                 }
@@ -68,6 +73,11 @@ sub opac_cover_images {
 
     my $js = <<'JS';
     <script>
+      function hidePlaceholderAndBDSCoverHint(e, i) {
+        e.style.display = 'none';
+        let hintTag = document.querySelector(`#bds-coverimg-${i}`);
+        hintTag.style.display = 'none';
+      }
       function addBDSCoversOPAC(e) {
         const searchResultsImages = document.querySelectorAll('.cover-slides, .cover-slider');
         if(searchResultsImages.length > 0){
@@ -76,11 +86,11 @@ sub opac_cover_images {
                 if(isbn){
                     div.innerHTML += `
                         <div class=${ imgtitle ? "" : "cover-image" }>
-                            <a href="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" />
-                                <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B" alt="BDS cover image" class=${ imgtitle ? "item-thumbnail" : "" } />
+                            <a href="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B&amp;err=no-placeholder" />
+                                <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=s&amp;DBM=B&amp;err=no-placeholder" onerror="hidePlaceholderAndBDSCoverHint(this, ${i})" alt="BDS cover image" class=${ imgtitle ? "item-thumbnail" : "" } />
                             </a>
                         </div>
-                        <div class="hint">Image from BDS</div>
+                        <div id="bds-coverimg-${i}" class="hint">Image from BDS</div>
                     `;
                 } else {
                     div.innerHTML += `<span class="no-image">No cover image available</span>`;
@@ -94,7 +104,7 @@ sub opac_cover_images {
                 if(isbn){
                     a.classList.add('cover-image');
                     a.innerHTML += `
-                        <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" alt="" />
+                        <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B&amp;err=no-placeholder" onerror="this.style.display='none'" alt="" />
                     `;
                 } else {
                     a.innerHTML += `<span class="no-image">No cover image available</span>`;
@@ -108,7 +118,7 @@ sub opac_cover_images {
                 if(isbn){
                     a.innerHTML += `
                         <span title="${title}" id="bds-coverimg-${isbn}">
-                            <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B" alt="" />
+                            <img src="https://www.bibdsl.co.uk/xmla/image-service.asp?ISBN=${isbn}&amp;SIZE=l&amp;DBM=B&amp;err=no-placeholder" onerror="this.style.display='none'" alt="" />
                         </span>
                     `;
                 } else {
