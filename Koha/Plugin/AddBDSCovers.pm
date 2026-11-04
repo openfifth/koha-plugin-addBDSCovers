@@ -21,7 +21,7 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION = "7.0";
+our $VERSION         = '7.0.0';
 
 our $metadata = {
     name            => 'AddBDSCovers',
