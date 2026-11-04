@@ -6,3 +6,7 @@ To use this plugin please download the .kpz file under Releases and upload this 
 DEVELOPMENT:
 If any changes are made to this plugin, please amend the version number in the .pm file.
 To create a release with the .kpz file, please run the following command "npm run release". This will commit the changes, push them to github and a release will be created automatically.
+
+## Licence
+
+This plugin is licensed under the GNU Affero General Public License v3.0 or later (`AGPL-3.0-or-later`). See [LICENSE](LICENSE).
