@@ -21,13 +21,13 @@ use Modern::Perl;
 
 use base qw(Koha::Plugins::Base);
 
-our $VERSION         = '7.0.0';
+our $VERSION         = '7.0.1';
 
 our $metadata = {
     name            => 'AddBDSCovers',
     author          => 'Matt Blenkinsop',
     date_authored   => '2022-01-11',
-    date_updated    => "2025-04-29",
+    date_updated    => '2026-11-05',
     minimum_version => '19.05.00.000',
     maximum_version => undef,
     version         => $VERSION,
